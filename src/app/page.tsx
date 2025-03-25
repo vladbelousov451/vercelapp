@@ -254,6 +254,7 @@ export default async function Home() {
       {/* News Cards (Matching Table Width) */}
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6">
         {newsItems.length > 0 ? (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           newsItems.map((item: any, index: number) => (
             <Card key={index} className="shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
