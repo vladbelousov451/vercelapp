@@ -286,27 +286,32 @@ export default async function Home() {
   </CardHeader>
   <CardContent>
     <p className="text-gray-600 line-clamp-3">{item.description}</p>
-    {/* Sentiment label */}
-    <div
-      className={`absolute bottom-2 right-2 inline-block py-1 px-3 rounded-full text-sm font-semibold ${
-        sentiment === "positive"
-          ? "bg-green-500 text-white"
-          : sentiment === "negative"
-          ? "bg-red-500 text-white"
-          : "bg-gray-500 text-white"
-      }`}
-    >
-      {sentiment.charAt(0).toUpperCase() + sentiment.slice(1)}
+    {/* Sentiment label and Read more on the same line */}
+    <div className="flex justify-between items-center mt-4">
+      {/* Sentiment label */}
+      <div
+        className={`inline-block py-1 px-3 rounded-full text-sm font-semibold ${
+          sentiment === "positive"
+            ? "bg-green-500 text-white"
+            : sentiment === "negative"
+            ? "bg-red-500 text-white"
+            : "bg-gray-500 text-white"
+        }`}
+      >
+        {sentiment.charAt(0).toUpperCase() + sentiment.slice(1)}
+      </div>
+
+      {/* Read more link */}
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 text-sm"
+      >
+        Read more
+      </a>
     </div>
   </CardContent>
-  <a
-    href={item.url}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block text-blue-500 mt-2 text-center"
-  >
-    Read more
-  </a>
 </Card>
             );
           })
