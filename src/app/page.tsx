@@ -10,9 +10,6 @@ import {
 import axios from "axios";
 import { Progress } from "@/components/ui/progress";
 
-
-
-
 // Fetch news from NewsAPI
 async function getFinancialNews() {
   try {
@@ -97,6 +94,17 @@ const heatmapData = [
 
 // Dummy Fear and Greed data
 const fearAndGreedIndex = 10; // Example value between 0 (Extreme Fear) and 100 (Extreme Greed)
+
+// Sentiment Analysis Helper Function
+function getSentiment(text: string) {
+  // Simple sentiment analysis logic (could be extended with NLP models)
+  if (text.toLowerCase().includes("growth") || text.toLowerCase().includes("positive")) {
+    return "positive";
+  } else if (text.toLowerCase().includes("decline") || text.toLowerCase().includes("loss")) {
+    return "negative";
+  }
+  return "neutral";
+}
 
 // Main page component
 export default async function Home() {
@@ -185,7 +193,6 @@ export default async function Home() {
                     <TableHead className="text-right">Change</TableHead>
                     <TableHead>CEO</TableHead>
                     <TableHead>Exchange</TableHead>
-                   
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -198,7 +205,7 @@ export default async function Home() {
                           className={`inline-block py-1 px-3 rounded-full text-sm font-semibold ${
                             stock.change.startsWith("+")
                               ? "bg-green-500 text-white" // Green background for positive change
-                              : "bg-red-500 text-white"   // Red background for negative change
+                              : "bg-red-500 text-white" // Red background for negative change
                           }`}
                         >
                           {stock.change}
@@ -206,7 +213,6 @@ export default async function Home() {
                       </TableCell>
                       <TableCell>{stock.ceo}</TableCell>
                       <TableCell>{stock.exchange}</TableCell>
-                      
                     </TableRow>
                   ))}
                 </TableBody>
@@ -224,7 +230,6 @@ export default async function Home() {
                     <TableHead className="text-right">Change</TableHead>
                     <TableHead>CEO</TableHead>
                     <TableHead>Exchange</TableHead>
-                    
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -237,7 +242,7 @@ export default async function Home() {
                           className={`inline-block py-1 px-3 rounded-full text-sm font-semibold ${
                             stock.change.startsWith("+")
                               ? "bg-green-500 text-white" // Green background for positive change
-                              : "bg-red-500 text-white"   // Red background for negative change
+                              : "bg-red-500 text-white" // Red background for negative change
                           }`}
                         >
                           {stock.change}
@@ -245,7 +250,6 @@ export default async function Home() {
                       </TableCell>
                       <TableCell>{stock.ceo}</TableCell>
                       <TableCell>{stock.exchange}</TableCell>
-                     
                     </TableRow>
                   ))}
                 </TableBody>
@@ -258,40 +262,53 @@ export default async function Home() {
       {/* News Cards (Matching Table Width) */}
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6">
         {newsItems.length > 0 ? (
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          newsItems.map((item: any, index: number) => (
-            <Card key={index} className="shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader>
-                {/* Article Image */}
-                {item.urlToImage && (
-                  <img
-                    src={item.urlToImage}
-                    alt={item.title}
-                    className="w-full h-40 object-cover rounded-t-lg mb-2"
-                  />
-                )}
-                <CardTitle className="text-lg text-gray-700 line-clamp-2">{item.title}</CardTitle>
-                {/* Author and Published At Subtitle */}
-                <p className="text-sm text-gray-500 mt-1">
-                  By {item.author || "Unknown Author"} on{" "}
-                  {item.publishedAt
-                    ? new Date(item.publishedAt).toLocaleDateString()
-                    : "Unknown Date"}
-                </p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 line-clamp-3">{item.description}</p>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-block text-blue-500"
-                >
-                  Read more
-                </a>
-              </CardContent>
-            </Card>
-          ))
+          newsItems.map((item, index) => {
+            const sentiment = getSentiment(item.description || "");
+
+            return (
+              <Card key={index} className="shadow-md hover:shadow-lg transition-shadow relative">
+  <CardHeader>
+    {/* Article Image */}
+    {item.urlToImage && (
+      <img
+        src={item.urlToImage}
+        alt={item.title}
+        className="w-full h-40 object-cover rounded-t-lg mb-2"
+      />
+    )}
+    <CardTitle className="text-lg text-gray-700 line-clamp-2">{item.title}</CardTitle>
+    {/* Author and Published At Subtitle */}
+    <p className="text-sm text-gray-500 mt-1">
+      By {item.author || "Unknown Author"} on{" "}
+      {item.publishedAt ? new Date(item.publishedAt).toLocaleDateString() : "Unknown Date"}
+    </p>
+  </CardHeader>
+  <CardContent>
+    <p className="text-gray-600 line-clamp-3">{item.description}</p>
+    {/* Sentiment label */}
+    <div
+      className={`absolute bottom-2 right-2 inline-block py-1 px-3 rounded-full text-sm font-semibold ${
+        sentiment === "positive"
+          ? "bg-green-500 text-white"
+          : sentiment === "negative"
+          ? "bg-red-500 text-white"
+          : "bg-gray-500 text-white"
+      }`}
+    >
+      {sentiment.charAt(0).toUpperCase() + sentiment.slice(1)}
+    </div>
+  </CardContent>
+  <a
+    href={item.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block text-blue-500 mt-2 text-center"
+  >
+    Read more
+  </a>
+</Card>
+            );
+          })
         ) : (
           <p>No news available at the moment.</p>
         )}
