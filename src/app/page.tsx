@@ -1,4 +1,4 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
+o/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -317,4 +317,3 @@ export default async function Home() {
     </div>
   );
 }
-make the posetive negative be at the same line as the read more
