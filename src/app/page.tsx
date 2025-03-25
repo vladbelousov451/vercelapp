@@ -192,8 +192,6 @@ export default async function Home() {
                     <TableRow key={index}>
                       <TableCell className="font-medium">{stock.symbol}</TableCell>
                       <TableCell>{stock.name}</TableCell>
-                      <TableCell>{stock.ceo}</TableCell>
-                      <TableCell>{stock.exchange}</TableCell>
                       <TableCell className="text-right">
                         <div
                           className={`inline-block py-1 px-3 rounded-full text-sm font-semibold ${
@@ -205,6 +203,9 @@ export default async function Home() {
                           {stock.change}
                         </div>
                       </TableCell>
+                      <TableCell>{stock.ceo}</TableCell>
+                      <TableCell>{stock.exchange}</TableCell>
+                      
                     </TableRow>
                   ))}
                 </TableBody>
